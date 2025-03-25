@@ -20,13 +20,11 @@ output reg [47:0] wr_data = 0
 );
 
 reg        i_call = 0;
-reg        count = 0;
+reg [1:0]  count = 0;
 reg [7:0]  mode = 0;
 reg [47:0] rdata = 0;
 reg [1:0]  rd_state = 0;
 reg [1:0]  wr_count = 0; 
-reg [31:0] out_data_sin = 0;
-reg [31:0] out_data_cos = 0;
 reg [63:0] out_data = 0;
 reg [31:0] out_data_tan = 0;
 reg [2:0]  wr_state = 0; 
@@ -38,7 +36,6 @@ localparam RD_ACCUM = 2'b11;
 localparam W_IDLE = 3'h0; 
 localparam W_SEND = 3'h1;
 
-wire o_done;
 wire o_done_1;
 wire o_done_2;
 wire o_done_3;
@@ -68,8 +65,6 @@ wire [31:0] o_x;
 always @(posedge clk) begin
     case (rd_state)
         RD_IDLE: begin 
-            i_data <= 0;
-            i_data2 <= 0;
             if (!empty) begin 
                 RD_en <= 1;
                 rd_state<= RD_HOLD;
@@ -94,13 +89,20 @@ always @(posedge clk) begin
                     count <= 1;
                     rd_state <= RD_IDLE;
                 end
-                else begin
-                    count <=0;
+                else if (count == 1)begin
                     i_data2 <= rdata[31:0];
                     i_call <= 1;
                     reset_n <= 1;
+                    count <= 2;
+                end
+                else begin
                     if (o_done_8) begin
                         rd_state <= RD_IDLE;
+                        i_call <= 0;
+                        reset_n <= 0;
+                        count <=0;
+                        i_data <= 0;
+                        i_data2 <= 0;
                     end
                 end
             end
@@ -113,6 +115,7 @@ always @(posedge clk) begin
                 rd_state <= RD_IDLE;
                 i_call <= 0;
                 reset_n <= 0;
+                i_data <= 0;
             end
         end
     endcase
@@ -132,8 +135,6 @@ always @(posedge clk) begin
                 end 
                 else if (mode == 2) begin
                     if (o_done_2) begin
-                        out_data_cos <= o_cosh;
-                        out_data_sin <= o_sinh;
                         out_data <= {o_cosh,o_sinh};
                         wr_state <= W_SEND;
                     end
@@ -149,12 +150,12 @@ always @(posedge clk) begin
             W_SEND: begin
                 case (wr_count)
                     0: begin
-                        wr_data <= {16'h000a, out_data [63:32]}; //sin 
+                        wr_data <= {16'h000a, out_data [31:0]}; //sin
                         wr_count <= wr_count + 1;
                         wr_en <= 1;
                     end
                     1: begin
-                        wr_data <= {16'h000c, out_data [31:0]}; //cos 
+                        wr_data <= {16'h000c, out_data [63:32]}; //cos
                         wr_count <= 0;
                         wr_state <= W_IDLE;
                     end
@@ -169,8 +170,8 @@ always @(posedge clk) begin
                 wr_en <= 0;
                 wr_data <= 0;
                 if (o_done_3) begin
-                    out_data <= {o_cosht,o_sinht};
                     out_data_tan <= o_tanh;
+                    out_data <= {o_cosht,o_sinht};
                     wr_state <= W_SEND;
                 end
             end 
@@ -178,18 +179,18 @@ always @(posedge clk) begin
             W_SEND: begin
                 case (wr_count)
                     0: begin
-                        wr_data <= {16'h000a, out_data [63:32]}; //sinh 
+                        wr_data <= {16'h000a, out_data [31:0]}; //sin
                         wr_count <= wr_count + 1;
                         wr_en <= 1;
-                     end
-                     1: begin
-                         wr_data <= {16'h000c, out_data [31:0]}; //cosh 
-                         wr_count <=  wr_count + 1;
                     end
-                     2: begin
-                         wr_data <= {16'h000b, out_data_tan}; //tanh 
-                         wr_count <=  0;
-                         wr_state <= W_IDLE;
+                    1: begin
+                        wr_data <= {16'h000c, out_data [63:32]}; //cos
+                        wr_count <= wr_count + 1;
+                    end
+                    2 : begin
+                        wr_data <= {16'h000b, out_data_tan}; //tanh
+                        wr_count <=  0;
+                        wr_state <= W_IDLE;
                     end
                 endcase
             end
