@@ -1,0 +1,49 @@
+{
+    "args": [
+        "-o",
+        "divider_signed",
+        "--base_path",
+        "/home/dev/divider_core/ip",
+        "--vlnv",
+        {
+            "vendor": "efinixinc.com",
+            "library": "arithmetic",
+            "name": "efx_divider",
+            "version": "5.0"
+        }
+    ],
+    "conf": {
+        "NREPRESENTATION": "\"SIGNED\"",
+        "WIDTHN": "32",
+        "WIDTHD": "32",
+        "DREPRESENTATION": "\"SIGNED\"",
+        "PIPELINE": "1'b1",
+        "LATENCY": "8"
+    },
+    "output": {
+        "external_source_source": [
+            "/home/dev/divider_core/ip/divider_signed/divider_signed_define.vh",
+            "/home/dev/divider_core/ip/divider_signed/divider_signed_tmpl.v",
+            "/home/dev/divider_core/ip/divider_signed/divider_signed.v",
+            "/home/dev/divider_core/ip/divider_signed/divider_signed_tmpl.vhd"
+        ],
+        "external_example_example": [
+            "/home/dev/divider_core/ip/divider_signed/T20F256_devkit/divider.peri.xml",
+            "/home/dev/divider_core/ip/divider_signed/T20F256_devkit/divider.xml",
+            "/home/dev/divider_core/ip/divider_signed/T20F256_devkit/demo_divider.v",
+            "/home/dev/divider_core/ip/divider_signed/T20F256_devkit/example_divider_T20.sdc",
+            "/home/dev/divider_core/ip/divider_signed/T20F256_devkit/divider_signed.v",
+            "/home/dev/divider_core/ip/divider_signed/T20F256_devkit/divider_signed_define.vh"
+        ],
+        "external_example_2": [
+            "/home/dev/divider_core/ip/divider_signed/Ti60F225_devkit/divider.peri.xml",
+            "/home/dev/divider_core/ip/divider_signed/Ti60F225_devkit/divider.xml",
+            "/home/dev/divider_core/ip/divider_signed/Ti60F225_devkit/demo_divider.v",
+            "/home/dev/divider_core/ip/divider_signed/Ti60F225_devkit/example_divider_Ti60.sdc",
+            "/home/dev/divider_core/ip/divider_signed/Ti60F225_devkit/divider_signed.v",
+            "/home/dev/divider_core/ip/divider_signed/Ti60F225_devkit/divider_signed_define.vh"
+        ]
+    },
+    "sw_version": "2023.2.307",
+    "generated_date": "2025-04-03T11:44:47.615808"
+}

@@ -1,0 +1,49 @@
+{
+    "args": [
+        "-o",
+        "divider_unsigned",
+        "--base_path",
+        "/home/dev/divider_core/ip",
+        "--vlnv",
+        {
+            "vendor": "efinixinc.com",
+            "library": "arithmetic",
+            "name": "efx_divider",
+            "version": "5.0"
+        }
+    ],
+    "conf": {
+        "NREPRESENTATION": "\"UNSIGNED\"",
+        "WIDTHN": "32",
+        "WIDTHD": "32",
+        "DREPRESENTATION": "\"UNSIGNED\"",
+        "PIPELINE": "1'b1",
+        "LATENCY": "8"
+    },
+    "output": {
+        "external_source_source": [
+            "/home/dev/divider_core/ip/divider_unsigned/divider_unsigned_define.vh",
+            "/home/dev/divider_core/ip/divider_unsigned/divider_unsigned_tmpl.v",
+            "/home/dev/divider_core/ip/divider_unsigned/divider_unsigned.v",
+            "/home/dev/divider_core/ip/divider_unsigned/divider_unsigned_tmpl.vhd"
+        ],
+        "external_example_example": [
+            "/home/dev/divider_core/ip/divider_unsigned/T20F256_devkit/divider.peri.xml",
+            "/home/dev/divider_core/ip/divider_unsigned/T20F256_devkit/divider.xml",
+            "/home/dev/divider_core/ip/divider_unsigned/T20F256_devkit/demo_divider.v",
+            "/home/dev/divider_core/ip/divider_unsigned/T20F256_devkit/example_divider_T20.sdc",
+            "/home/dev/divider_core/ip/divider_unsigned/T20F256_devkit/divider_unsigned.v",
+            "/home/dev/divider_core/ip/divider_unsigned/T20F256_devkit/divider_unsigned_define.vh"
+        ],
+        "external_example_2": [
+            "/home/dev/divider_core/ip/divider_unsigned/Ti60F225_devkit/divider.peri.xml",
+            "/home/dev/divider_core/ip/divider_unsigned/Ti60F225_devkit/divider.xml",
+            "/home/dev/divider_core/ip/divider_unsigned/Ti60F225_devkit/demo_divider.v",
+            "/home/dev/divider_core/ip/divider_unsigned/Ti60F225_devkit/example_divider_Ti60.sdc",
+            "/home/dev/divider_core/ip/divider_unsigned/Ti60F225_devkit/divider_unsigned.v",
+            "/home/dev/divider_core/ip/divider_unsigned/Ti60F225_devkit/divider_unsigned_define.vh"
+        ]
+    },
+    "sw_version": "2023.2.307",
+    "generated_date": "2025-04-03T11:44:15.328116"
+}
