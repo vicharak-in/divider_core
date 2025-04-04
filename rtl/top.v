@@ -5,7 +5,8 @@ module top (
     input                       rx_pixel_clk,
     input                       tx_pixel_clk,
     input                       tx_vga_clk,
-
+    input                       divider_clk,
+  
 /* Signals used by the MIPI RX Interface Designer instance */
     input                       my_mipi_rx_VALID,
     input [3:0]                 my_mipi_rx_HSYNC,
@@ -121,18 +122,37 @@ rah_version_check #(
 );
 
 /* Periplex instantiation for multiplexing peripherals */
-assign rd_clk[`EXAMPLE] = rx_pixel_clk; 
+assign rd_clk[`DIVIDER_UNSIGNED] = rx_pixel_clk; 
+assign wr_clk[`DIVIDER_UNSIGNED] = divider_clk;
 
 /* change this module as your app */
-example_recv #(
-    .RAH_PACKET_WIDTH(RAH_PACKET_WIDTH)
-) er (
-    .clk(rx_pixel_clk),
-    .data_queue_empty(data_queue_empty[`EXAMPLE]),
-    .data_queue_almost_empty(data_queue_almost_empty[`EXAMPLE]),
-    .request_data(request_data[`EXAMPLE]),
-    .data_frame(`GET_DATA_RAH(`EXAMPLE)),
-    .uart_tx_pin(uart_tx_pin)
+top_module #(
+    .SIGNED (0)
+) tmu (
+    .clk            (rx_pixel_clk),
+    .divider_clk    (divider_clk),
+    .data           (`GET_DATA_RAH(`DIVIDER_UNSIGNED)),
+    .empty          (data_queue_empty[`DIVIDER_UNSIGNED]),
+    .RD_en          (request_data[`DIVIDER_UNSIGNED]),
+    .wr_en          (write_apps_data[`DIVIDER_UNSIGNED]),
+    .wr_data        (`SET_DATA_RAH(`DIVIDER_UNSIGNED)),
+    .almost_empty   (data_queue_almost_empty[`DIVIDER_UNSIGNED])
+);
+   
+assign rd_clk[`DIVIDER_SIGNED] = rx_pixel_clk; 
+assign wr_clk[`DIVIDER_SIGNED] = divider_clk;
+
+top_module #(
+    .SIGNED (1)
+) tms (
+    .clk            (rx_pixel_clk),
+    .divider_clk    (divider_clk),
+    .data           (`GET_DATA_RAH(`DIVIDER_SIGNED)),
+    .empty          (data_queue_empty[`DIVIDER_SIGNED]),
+    .RD_en          (request_data[`DIVIDER_SIGNED]),
+    .wr_en          (write_apps_data[`DIVIDER_SIGNED]),
+    .wr_data        (`SET_DATA_RAH(`DIVIDER_SIGNED)),
+    .almost_empty   (data_queue_almost_empty[`DIVIDER_SIGNED])
 );
 
 /* Send data to processor */
@@ -174,18 +194,6 @@ rah_encoder #(
     .mipi_data              (mipi_out_data),
     .hsync_patgen           (hsync),
     .vsync_patgen           (vsync)
-);
-
-assign wr_clk[`EXAMPLE] = tx_pixel_clk;
-
-/* Include your module */
-example_trans #(
-    .RAH_PACKET_WIDTH(RAH_PACKET_WIDTH)
-) et (
-    .clk            (tx_pixel_clk),
-    .uart_rx_pin    (uart_rx_pin),
-    .data           (`SET_DATA_RAH(`EXAMPLE)),
-    .send_data      (write_apps_data[`EXAMPLE])
 );
 
 assign my_mipi_tx_DPHY_RSTN = ~mipi_out_rst;
