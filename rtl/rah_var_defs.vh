@@ -1,6 +1,7 @@
-`define TOTAL_APPS 1
+`define TOTAL_APPS 2
 
-`define EXAMPLE 1
+`define DIVIDER_UNSIGNED 1
+`define DIVIDER_SIGNED 2
 
 `define VERSION "1.2.2"
 

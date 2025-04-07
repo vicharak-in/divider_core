@@ -1,0 +1,33 @@
+{
+    "args": [
+        "-o",
+        "divider_unsigned",
+        "--base_path",
+        "/home/dev/Vicharak/divider/ip",
+        "--vlnv",
+        {
+            "vendor": "efinixinc.com",
+            "library": "arithmetic",
+            "name": "efx_divider",
+            "version": "5.0"
+        }
+    ],
+    "conf": {
+        "NREPRESENTATION": "\"UNSIGNED\"",
+        "WIDTHN": "32",
+        "WIDTHD": "32",
+        "DREPRESENTATION": "\"UNSIGNED\"",
+        "PIPELINE": "1'b1",
+        "LATENCY": "8"
+    },
+    "output": {
+        "external_source_source": [
+            "/home/dev/Vicharak/divider/ip/divider_unsigned/divider_unsigned.v",
+            "/home/dev/Vicharak/divider/ip/divider_unsigned/divider_unsigned_tmpl.vhd",
+            "/home/dev/Vicharak/divider/ip/divider_unsigned/divider_unsigned_define.vh",
+            "/home/dev/Vicharak/divider/ip/divider_unsigned/divider_unsigned_tmpl.v"
+        ]
+    },
+    "sw_version": "2023.2.307",
+    "generated_date": "2025-04-04T11:41:18.733506"
+}
