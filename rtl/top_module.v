@@ -37,7 +37,9 @@ rah_cont_meta_stable inst (
     .write_in(write_in)
 );
 
-divider_mode_cont inst2 (
+divider_mode_cont #(
+    .SIGNED(SIGNED)
+) inst2 (
     .divider_clk(divider_clk),
     .write(write),
     .out_data(out_data),
