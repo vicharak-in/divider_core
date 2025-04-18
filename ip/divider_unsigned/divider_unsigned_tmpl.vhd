@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Copyright (C) 2013-2023 Efinix Inc. All rights reserved.              
+-- Copyright (C) 2013-2024 Efinix Inc. All rights reserved.              
 --
 -- This   document  contains  proprietary information  which   is        
 -- protected by  copyright. All rights  are reserved.  This notice       
@@ -37,26 +37,29 @@
 --
 --------------------------------------------------------------------------------
 ------------- Begin Cut here for COMPONENT Declaration ------
-COMPONENT divider_unsigned is
-PORT (
-numer : in std_logic_vector(31 downto 0);
-denom : in std_logic_vector(31 downto 0);
-clken : in std_logic;
-clk : in std_logic;
-reset : in std_logic;
-quotient : out std_logic_vector(31 downto 0);
-remain : out std_logic_vector(31 downto 0));
-END COMPONENT;
----------------------- End COMPONENT Declaration ------------
+component divider_unsigned is
+port (
+    numer : in std_logic_vector(63 downto 0);
+    denom : in std_logic_vector(63 downto 0);
+    clken : in std_logic;
+    clk : in std_logic;
+    reset : in std_logic;
+    quotient : out std_logic_vector(63 downto 0);
+    remain : out std_logic_vector(63 downto 0)
+);
+end component divider_unsigned;
 
+---------------------- End COMPONENT Declaration ------------
 ------------- Begin Cut here for INSTANTIATION Template -----
 u_divider_unsigned : divider_unsigned
-PORT MAP (
-numer => numer,
-denom => denom,
-clken => clken,
-clk => clk,
-reset => reset,
-quotient => quotient,
-remain => remain);
+port map (
+    numer => numer,
+    denom => denom,
+    clken => clken,
+    clk => clk,
+    reset => reset,
+    quotient => quotient,
+    remain => remain
+);
+
 ------------------------ End INSTANTIATION Template ---------
