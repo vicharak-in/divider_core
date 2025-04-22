@@ -39,13 +39,13 @@
 ------------- Begin Cut here for COMPONENT Declaration ------
 component divider_unsigned is
 port (
-    numer : in std_logic_vector(63 downto 0);
-    denom : in std_logic_vector(63 downto 0);
+    numer : in std_logic_vector(31 downto 0);
+    denom : in std_logic_vector(31 downto 0);
     clken : in std_logic;
     clk : in std_logic;
     reset : in std_logic;
-    quotient : out std_logic_vector(63 downto 0);
-    remain : out std_logic_vector(63 downto 0)
+    quotient : out std_logic_vector(31 downto 0);
+    remain : out std_logic_vector(31 downto 0)
 );
 end component divider_unsigned;
 

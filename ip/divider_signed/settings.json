@@ -14,8 +14,8 @@
     ],
     "conf": {
         "NREPRESENTATION": "\"SIGNED\"",
-        "WIDTHN": "64",
-        "WIDTHD": "64",
+        "WIDTHN": "32",
+        "WIDTHD": "32",
         "DREPRESENTATION": "\"SIGNED\"",
         "PIPELINE": "1'b1",
         "LATENCY": "8"
@@ -24,10 +24,10 @@
         "external_source_source": [
             "divider_signed/divider_signed.v",
             "divider_signed/divider_signed_define.vh",
-            "divider_signed/divider_signed_tmpl.v",
-            "divider_signed/divider_signed_tmpl.vhd"
+            "divider_signed/divider_signed_tmpl.vhd",
+            "divider_signed/divider_signed_tmpl.v"
         ]
     },
     "sw_version": "2024.2.294",
-    "generated_date": "2025-04-17T07:30:13.151400+00:00"
+    "generated_date": "2025-04-21T14:47:56.589353+00:00"
 }
