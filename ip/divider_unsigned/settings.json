@@ -14,8 +14,8 @@
     ],
     "conf": {
         "NREPRESENTATION": "\"UNSIGNED\"",
-        "WIDTHN": "64",
-        "WIDTHD": "64",
+        "WIDTHN": "32",
+        "WIDTHD": "32",
         "DREPRESENTATION": "\"UNSIGNED\"",
         "PIPELINE": "1'b1",
         "LATENCY": "8"
@@ -29,5 +29,5 @@
         ]
     },
     "sw_version": "2024.2.294",
-    "generated_date": "2025-04-17T07:30:36.354224+00:00"
+    "generated_date": "2025-04-21T14:48:20.325173+00:00"
 }

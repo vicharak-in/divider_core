@@ -43,24 +43,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-`define IP_UUID _b95bbb6543f046599dbbba8e7a03189e
+`define IP_UUID _f1b98068eb9240b2a325ec81f230ec2e
 `define IP_NAME_CONCAT(a,b) a``b
 `define IP_MODULE_NAME(name) `IP_NAME_CONCAT(name,`IP_UUID)
 module divider_signed
 (
-    input [63:0] numer,
-    input [63:0] denom,
+    input [31:0] numer,
+    input [31:0] denom,
     input clken,
     input clk,
     input reset,
-    output [63:0] quotient,
-    output [63:0] remain
+    output [31:0] quotient,
+    output [31:0] remain
 );
 `IP_MODULE_NAME(divider)
 #(
     .NREPRESENTATION ("SIGNED"),
-    .WIDTHN (64),
-    .WIDTHD (64),
+    .WIDTHN (32),
+    .WIDTHD (32),
     .DREPRESENTATION ("SIGNED"),
     .PIPELINE (1'b1),
     .LATENCY (8)
