@@ -1,48 +1,55 @@
 module divider_mode_cont(
     input               divider_clk,
     input               write,
-    input [95:0]        out_data,
-    input [31:0]        o_x,
-    input [31:0]        o_y,
+    input [143:0]       out_data,
+    input [63:0]        o_x,
+    input [63:0]        o_y,
     output reg          i_call,
     output reg          reset_n,
     output reg          write_in,
-    output reg [31:0]   num_data,
-    output reg [31:0]   dem_data,
-    output reg [95:0]   write_out
+    output reg [63:0]   num_data,
+    output reg [63:0]   dem_data,
+    output reg [143:0]  write_out
 );
 parameter SIGNED = 1'b0;
-reg [1:0] state;
-reg [95:0] out_data_mode;
+reg [2:0] state;
 reg store_next;
 reg [7:0] set;
 reg [7:0] wr_count;
 
-reg [31:0] nu_data, de_data;
-reg [31:0] o_x2, o_y2;
+reg [63:0] nu_data, de_data;
+reg [63:0] o_x2, o_y2;
 
 generate 
     if (SIGNED) begin: signed_block
-
-        task get_signed_data;
-            input [3:0] mode;
-            input [31:0] data_in;
-            output [31:0] data_out;
-            begin
-                case (mode)
-                    4'h1: data_out = {{24{data_in[7]}},data_in[7:0]};
-                    4'h2: data_out = {{16{data_in[15]}},data_in[15:0]};
-                    4'h3: data_out = {{8{data_in[23]}},data_in[23:0]};
-                    4'h4: data_out = data_in;
-                    default: data_out = 32'b0;
-                endcase
-            end
-        endtask
-
         always @(posedge divider_clk) begin
             if (write) begin
-                get_signed_data(out_data[43:40],out_data[31:0], nu_data);
-                get_signed_data(out_data[91:88],out_data[79:48], de_data);
+                case (out_data[135:128])
+                    8'h1: begin 
+                        de_data <= {{56{out_data[7]}},out_data[7:0]};
+                        nu_data <= {{56{out_data[75]}},out_data[79:64]};
+                    end
+                    8'h2: begin 
+                        de_data <= {{48{out_data[15]}},out_data[15:0]};
+                        nu_data <= {{48{out_data[83]}},out_data[87:64]};
+                    end
+                    8'h3: begin 
+                        de_data <= {{40{out_data[23]}},out_data[23:0]};
+                        nu_data <= {{40{out_data[91]}},out_data[95:64]};
+                    end 
+                    8'h4: begin 
+                        de_data <= {{32{out_data[31]}},out_data[31:0]};
+                        nu_data <= {{32{out_data[99]}},out_data[103:64]};
+                    end
+                    8'h5: begin
+                         de_data <= out_data[63:0];
+                         nu_data <= out_data[127:64];
+                    end
+                    default: begin 
+                     	de_data <= 64'b0;
+                     	nu_data <= 64'b0;
+                    end
+                endcase
                 store_next <= 1;
             end else begin
                 store_next <= 0;
@@ -53,26 +60,34 @@ generate
     end
 
     else begin: unsigned_block
-
-        task get_unsigned_data;
-            input [3:0] mode;
-            input [31:0] data_in;
-            output [31:0] data_out;
-            begin
-                case (mode)
-                    4'h1: data_out = {24'b0,data_in[7:0]};
-                    4'h2: data_out = {16'b0,data_in[15:0]};
-                    4'h3: data_out = {8'b0,data_in[23:0]};
-                    4'h4: data_out = data_in;
-                    default: data_out = 32'b0;
-                endcase
-            end
-        endtask
-    
         always @(posedge divider_clk) begin
             if (write) begin
-                get_unsigned_data(out_data[43:40], out_data[31:0], nu_data);
-                get_unsigned_data(out_data[91:88], out_data[79:48], de_data);
+                case (out_data[135:128])
+                    8'h1: begin 
+                        de_data <= {56'b0,out_data[7:0]};
+                        nu_data <= {56'b0,out_data[79:64]};
+                    end
+                    8'h2: begin 
+                        de_data <= {48'b0,out_data[15:0]};
+                        nu_data <= {48'b0,out_data[87:64]};
+                    end
+                    8'h3: begin 
+                        de_data <= {40'b0,out_data[23:0]};
+                        nu_data <= {40'b0,out_data[95:64]};
+                    end 
+                    8'h4: begin 
+                        de_data <= {32'b0,out_data[31:0]};
+                        nu_data <= {32'b0,out_data[103:64]};
+                    end
+                    8'h5: begin
+                         de_data <= out_data[63:0];
+                         nu_data <= out_data[127:68];
+                    end
+                    default: begin            	
+                     	de_data <= 64'b0;           	
+                     	nu_data <= 64'b0;
+                    end
+                endcase
                 store_next <= 1;
             end else begin
                 store_next <= 0;
@@ -93,7 +108,7 @@ always @(posedge divider_clk) begin
     end else begin
         set <= set + 1;
 
-        if (set == 8) begin
+        if (set == 64) begin
             set <= 0;
             i_call <= 0;
             reset_n <= 1;
@@ -107,7 +122,7 @@ always @(posedge divider_clk) begin
             write_in <= 0;
 
             if (i_call) begin
-                if (wr_count < 7) wr_count <= wr_count + 1;
+                if (wr_count < 63) wr_count <= wr_count + 1;
                 else state <= 1;
             end else begin
                 wr_count <= 0;
@@ -123,12 +138,15 @@ always @(posedge divider_clk) begin
 
         2: begin
             write_in <= 1;
-            write_out[95:48] <= {16'h000a, o_x2} ;
+            write_out[143:96] <= {8'h0a,o_x2[63:24]};
             state <= 3;
         end
-
         3: begin
-            write_out[47:0] <= {16'h000b, o_y2} ;
+            write_out[95:48] <= {o_x2[23:0],8'h0b,o_y2[63:48]};
+            state <= 4;
+        end
+        4: begin
+            write_out[47:0] <= {o_y2[47:0]};
             state <= 0;
         end
     endcase

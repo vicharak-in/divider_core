@@ -14,11 +14,11 @@
     ],
     "conf": {
         "NREPRESENTATION": "\"SIGNED\"",
-        "WIDTHN": "32",
-        "WIDTHD": "32",
+        "WIDTHN": "64",
+        "WIDTHD": "64",
         "DREPRESENTATION": "\"SIGNED\"",
         "PIPELINE": "1'b1",
-        "LATENCY": "8"
+        "LATENCY": "64"
     },
     "output": {
         "external_source_source": [
@@ -29,5 +29,5 @@
         ]
     },
     "sw_version": "2024.2.294",
-    "generated_date": "2025-04-21T14:47:56.589353+00:00"
+    "generated_date": "2025-04-25T11:17:41.656572+00:00"
 }

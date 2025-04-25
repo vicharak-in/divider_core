@@ -9,16 +9,16 @@ module top_module (
     output [47:0] wr_data
 );
 
-wire [95:0] out_data;
+wire [143:0] out_data;
 wire write;
 wire write_in;
-wire [31:0] o_x;
-wire [31:0] o_y;
+wire [63:0] o_x;
+wire [63:0] o_y;
 wire i_call;
 wire reset_n;
-wire [31:0] nu_data;
-wire [31:0] de_data;
-wire [95:0] write_out;
+wire [63:0] nu_data;
+wire [63:0] de_data;
+wire [191:0] write_out;
 
 parameter SIGNED = 1'b0;
 
