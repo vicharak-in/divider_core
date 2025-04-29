@@ -44,8 +44,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 localparam NREPRESENTATION = "SIGNED";
-localparam WIDTHN = 32;
-localparam WIDTHD = 32;
+localparam WIDTHN = 64;
+localparam WIDTHD = 64;
 localparam DREPRESENTATION = "SIGNED";
 localparam PIPELINE = 1'b1;
-localparam LATENCY = 8;
+localparam LATENCY = 64;

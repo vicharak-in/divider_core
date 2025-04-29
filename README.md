@@ -13,8 +13,8 @@ The divider module provides the following functions:
 
 - **Supports Signed and Unsigned Division**
 - **Pipelined Architecture** for faster computations
-- **Takes 8-bit/16-bit/24-bit/32-bit Numerator and Denominator**
-- **Returns 32-bit Quotient and Remainder**
+- **Takes 8-bit/16-bit/24-bit/32-bit/64-bit Numerator and Denominator**
+- **Returns 64-bit Quotient and Remainder**
 
 ## FPGA User Guide
 
@@ -29,17 +29,17 @@ This ensures the correct operation mode based on the type of division required.
 The FPGA receives input frames via the RAH communication interface. The input frame format for the divider processing is structured as follows:
 
 ### Input Frame Format
-Each input frame consists of **4 bytes (32-bit format)**:
-1. **First Byte:** Width selection:
+Input frame consists of **18 bytes (144-bit format)**:
+1. **1 byte:** Reserved 
+2. **1 Byte:** Width selection:
    - `1` → 8-bit
    - `2` → 16-bit
    - `3` → 24-bit
    - `4` → 32-bit
-2. **Second Byte:** Indicates whether the value is:
-   - `1` → Numerator
-   - `0` → Denominator
-3. **Remaining Two Bytes:** Hold the actual input value
-
+   - `5` → 64-bit
+3. **8 bytes:** Hold the actual input value of Numerator
+4. **8 bytes:** Hold the actual input value of Denominator
+  
 <div align="center">
 
 ![image](images/input_data_frame_structure.svg)
@@ -47,22 +47,31 @@ Each input frame consists of **4 bytes (32-bit format)**:
 </div>
 
 Example:
-- If width is **8-bit** and the value of **Numerator** is `4`, the input frame would be:
-  - `01 01 00 00 00 04`
+- If width is **8-bit** and the value of **Numerator** is `4` and the value of **Denominator** is `2`,the input frame would be:
+  - `00 01 00 00 00 00 00 00 00 04 00 00 00 00 00 00 00 02`
 
 
 The FPGA decodes the incoming frame, extracts the numerator and denominator, performs the division operation, and returns the computed quotient and remainder in an output frame.
 
 ### Output Frame Format
-Each output frame consists of **4 bytes (32-bit format)**:
-1. **First Byte:** Reserved for future use
-2. **Second Byte:** Indicate whether the value is a **quotient** or **remainder**
+Output frame consists of **18 bytes (144-bit format)**:
+1. **1 Byte:** Indicate whether the value is a **quotient** or **remainder**
+   - `a` → quotient
+   - `b` → remainder
+2. **8 bytes:** Hold the actual output value of quotient
+3. **1 Byte:** Indicate whether the value is a **quotient** or **remainder**
+   - `a` → quotient
+   - `b` → remainder
+4. **8 bytes:** Hold the actual output value of remainder
 
 <div align="center">
 
 ![image](images/output_data_frame_structure.svg)
 
 </div>
+
+Example:
+- `0a 00 00 00 00 00 00 00 02 00 00 00 0b 00 00 00 00 00 00 00 00 00 00 00`
 
 This structure ensures clarity in data processing and interpretation.
 
